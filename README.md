@@ -1,6 +1,6 @@
 # what is different in this fork?
-* Docker api_id and api_hash have default value
-* Docker bot disabled for heroku
+* api_id and api_hash have default value
+* bot disabled for heroku
 
 # stream-cloud
 
