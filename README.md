@@ -1,7 +1,10 @@
+# what is different in this fork?
+1 - api_id and api_hash have default value
+2 - bot disabled for heroku
+
 # stream-cloud
 
 demo : [downloader_star_bot](https://t.me/downloader_star_bot)
-
 
 # Run :
 
@@ -17,7 +20,7 @@ demo : [downloader_star_bot](https://t.me/downloader_star_bot)
 
     [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/miaadp/stream-cloud)
 
-    `git clone https://github.com/musa-42/stream-cloud`
+    `git clone https://github.com/miaadp/stream-cloud`
     
     > edit Config/__init__.py
     
@@ -29,7 +32,7 @@ demo : [downloader_star_bot](https://t.me/downloader_star_bot)
 
     > install python3.8+
     
-    `git clone https://github.com/musa-42/stream-cloud`
+    `git clone https://github.com/miaadp/stream-cloud`
     
     > set Environment or edit Config/__init__.py
     
