@@ -1,7 +1,6 @@
 from aiohttp import web
 import re
 from telethon.client.downloads import MAX_CHUNK_SIZE
-from config import Config
 
 class Router:
     
