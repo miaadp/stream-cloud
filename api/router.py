@@ -1,11 +1,9 @@
 from aiohttp import web
 import re
-from telethon.client.downloads import MAX_CHUNK_SIZE
-
 
 class Router:
     RANGE_REGEX = re.compile(r"bytes=([0-9]+)-")
-    BLOCK_SIZE = MAX_CHUNK_SIZE
+    BLOCK_SIZE = 1048576
     ext_attachment = [".mp4", ]
 
     async def hello(self, request):
@@ -59,6 +57,7 @@ class Router:
         file_ext = message.file.ext
         download_skip = (offset // self.BLOCK_SIZE) * self.BLOCK_SIZE
         read_skip = offset - download_skip
+        rem_size = file_size-offset
 
         if download_skip >= file_size:
             return web.Response(text='xxxxxxxxxxxxxxxxxxx3xxxxxxxxxxxxxxxxxxxxx')
@@ -71,7 +70,7 @@ class Router:
                 'Content-Type': message.file.mime_type,
                 'Accept-Ranges': 'bytes',
                 'Content-Range': f'bytes {offset}-{file_size}/{file_size}',
-                "Content-Length": str(file_size),
+                "Content-Length": str(rem_size),
                 "Content-Disposition": f'attachment; filename={name}' if file_ext in self.ext_attachment else f'inline; filename={name}',
             },
             status=206 if offset else 200,
