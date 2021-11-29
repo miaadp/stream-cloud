@@ -1,4 +1,7 @@
+import asyncio
+
 from aiohttp import web
+import math
 import re
 from telethon.client.downloads import MAX_CHUNK_SIZE
 from config import Config
@@ -35,6 +38,27 @@ class Router:
                 content_type='text/html')
         else:
             return web.Response(text='message format is not mp4 or mkv , message format is ' + file_ext)
+
+    async def download(self, file, offset, limit):
+        part_size = 512 * 1024
+        first_part_cut = offset % part_size
+        first_part = math.floor(offset / part_size)
+        last_part_cut = part_size - (limit % part_size)
+        last_part = math.ceil(limit / part_size)
+        part = first_part
+        try:
+            async for chunk in self.iter_download(file, offset=first_part * part_size, request_size=part_size):
+                if part == first_part:
+                    yield chunk[first_part_cut:]
+                elif part == last_part:
+                    yield chunk[:last_part_cut]
+                else:
+                    yield chunk
+                part += 1
+        except (GeneratorExit, StopAsyncIteration, asyncio.CancelledError):
+            raise
+        except Exception:
+            raise
 
     async def Downloader(self, request):
         id_hex = request.match_info.get("id")
@@ -80,7 +104,7 @@ class Router:
                 }
             )
 
-        body = self.client.download(media, size, offset, limit)
+        body = self.client.download(media, offset, limit)
 
         return_resp = web.Response(
             status=206 if request.http_range.start else 200,
@@ -91,7 +115,7 @@ class Router:
                 "Content-Range": f"bytes {offset}-{limit}/{size}",
                 "Content-Disposition": f'attachment; filename="{file_name}"',
                 "Accept-Ranges": "bytes",
-                # "Content-Length": f"{limit-offset}"
+                "Content-Length": f"{limit-offset}"
             }
         )
 
