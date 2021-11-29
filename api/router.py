@@ -47,7 +47,8 @@ class Router:
         last_part = math.ceil(limit / part_size)
         part = first_part
         try:
-            async for chunk in self.client.iter_download(file, offset=first_part * part_size, request_size=part_size):
+            bls = self.client.iter_download(file, offset=first_part * part_size, request_size=part_size)
+            async for chunk in bls:
                 if part == first_part:
                     yield chunk[first_part_cut:]
                 elif part == last_part:
