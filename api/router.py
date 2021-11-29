@@ -73,7 +73,7 @@ class Router:
                 "Content-Length": str(rem_size),
                 "Content-Disposition": f'attachment; filename={name}' if file_ext in self.ext_attachment else f'inline; filename={name}',
             },
-            status=206,
+            status=206 if offset else 200,
         )
         await resp.prepare(request)
 
