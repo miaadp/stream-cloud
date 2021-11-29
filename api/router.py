@@ -3,7 +3,7 @@ import re
 
 class Router:
     RANGE_REGEX = re.compile(r"bytes=([0-9]+)-")
-    BLOCK_SIZE = 1048576
+    BLOCK_SIZE = 32*1024
     ext_attachment = [".mp4", ]
 
     async def hello(self, request):
@@ -77,7 +77,7 @@ class Router:
         )
         await resp.prepare(request)
 
-        cls = self.client.iter_download(message.media, offset=download_skip, request_size=512*1024)
+        cls = self.client.iter_download(message.media, offset=download_skip, request_size=BLOCK_SIZE)
         async for part in cls:
             if len(part) < read_skip:
                 read_skip -= len(part)
