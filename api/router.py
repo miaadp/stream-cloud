@@ -77,7 +77,7 @@ class Router:
         )
         await resp.prepare(request)
 
-        cls = self.client.iter_download(message.media, offset=download_skip)
+        cls = self.client.iter_download(message.media, offset=download_skip, request_size=512*1024)
         async for part in cls:
             if len(part) < read_skip:
                 read_skip -= len(part)
