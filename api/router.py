@@ -104,7 +104,7 @@ class Router:
                 }
             )
 
-        body = self.client.download(media, offset, limit)
+        body = self.download(media, offset, limit)
 
         return_resp = web.Response(
             status=206 if request.http_range.start else 200,
