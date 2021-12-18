@@ -9,8 +9,8 @@ async def main():
         [
             web.get('/', server.hello),
             web.get('/favicon.ico', server.Fav),
-            web.get('/player/{id}', server.Player),
-            web.get('/player/{id}/', server.Player),
+            #web.get('/player/{id}', server.Player),
+            #web.get('/player/{id}/', server.Player),
             web.get('/{id}', server.Downloader),
             web.get('/{id}/', server.Downloader),
             web.get('/{id}/{name}', server.Downloader),
