@@ -1,5 +1,6 @@
 from aiohttp import web
 import re
+from telethon.client.downloads import MAX_CHUNK_SIZE
 
 class Router:
     RANGE_REGEX = re.compile(r"bytes=([0-9]+)-")
@@ -77,7 +78,7 @@ class Router:
         )
         await resp.prepare(request)
 
-        cls = self.client.iter_download(message.media, offset=download_skip, request_size=BLOCK_SIZE)
+        cls = self.client.iter_download(message.media, offset=download_skip, request_size=MAX_CHUNK_SIZE)
         async for part in cls:
             if len(part) < read_skip:
                 read_skip -= len(part)
